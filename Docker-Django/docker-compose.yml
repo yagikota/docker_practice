@@ -6,8 +6,11 @@ services:
     # command: python manage.py runserver 0.0.0.0:8000
     # gunicorn
     command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
+
     volumes:
-      - ./django_project/:/usr/src/app/
+      # - ./django_project/:/usr/src/app/
+      - static_volume:/home/app/web/static
+      - media_volume:/home/app/web/media
     # ports:
     #   - 8000:8000 Djangoのrunserverコマンドは使用しないので、8000番ポート利用の設定をなくす
     expose:
@@ -26,10 +29,15 @@ services:
 
   nginx:
     build: ./nginx
+    volumes:
+      - static_volume:/home/app/web/static
+      - media_volume:/home/app/web/media
     ports:
       - 1317:80
     depends_on:
       - web
 
 volumes:
-  postgres_data:  # ?
+  postgres_data:
+  static_volume:
+  media_volume:

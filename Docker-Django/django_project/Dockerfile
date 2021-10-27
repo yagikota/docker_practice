@@ -29,10 +29,18 @@ RUN mkdir -p /home/app
 
 RUN addgroup -S app && adduser -S app -G app
 
+# ENV HOME=/home/app
+# ENV APP_HOME=/home/app/web
+# RUN mkdir $APP_HOME
+# WORKDIR $APP_HOME
+
 ENV HOME=/home/app
 ENV APP_HOME=/home/app/web
 RUN mkdir $APP_HOME
+RUN mkdir $APP_HOME/static
+RUN mkdir $APP_HOME/media
 WORKDIR $APP_HOME
+
 
 RUN apk update && apk add libpq
 COPY --from=builder /usr/src/app/wheels /wheels
